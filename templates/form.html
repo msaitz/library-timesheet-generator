@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% macro formchunk(num) %}
+    <p><strong>Staff {{ num }}</strong><br>
+    <input placeholder="name" name="name{{ num }}"</input>
+    <label>Position:</label>
+    <select name="job{{ num }}">
+        <option value="DLM">Manager</option>
+        <option value="SUP">Supervisor</option>
+        <option value="LA" selected>Assistant</option>
+        <option value="RA">Relief</option>
+    </select>
+    <label>Starting Time:</label>
+    <select name="start{{ num }}">
+        <option selected value="0">9:00</option>
+        <option value="1">10:00</option>
+        <option value="2">10:20</option>
+        <option value="3">10:40</option>
+        <option value="4">11:00</option>
+        <option value="5">12:00</option>
+        <option value="6">1:00</option>
+        <option value="7">2:00</option>
+        <option value="8">3:00</option>
+    </select>
+    <label>Finishing Time:</label>
+    <select name="finish{{ num }}">
+        <option value="6">1:00</option>
+        <option value="7">2:00</option>
+        <option value="8">3:00</option>
+        <option value="9">3:20</option>
+        <option value="10">3:40</option>
+        <option value="11">4:00</option>
+        <option value="12">5:00</option>
+        <option value="13">5:30</option>
+        <option value="14">6:00</option>
+        <option value="15">7:00</option>
+        <option selected value="16">8:00</option>
+    </select>
+    </p>
+{% endmacro %}
+
+<br><br>
+<form action="/timesheet" method="POST">
+    
+    {% for number in range(1, staff_number + 1) %}
+        {{ formchunk(number) }}
+    {% endfor %}
+    
+    <input type="submit" value="Submit">
+</form>
+
+
+{% endblock %}

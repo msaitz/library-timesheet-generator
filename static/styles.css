@@ -1,0 +1,16 @@
+table, th, td {
+    border: 1px solid black;
+}
+
+table {
+    table-layout: fixed;
+    width: 60%;
+}
+
+td {
+    text-align: center;
+}
+
+.names {
+    text-align: left;
+}

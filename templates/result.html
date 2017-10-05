@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% macro set_color(cell) %}
+    {% if cell == ' ' %}
+        bgcolor="#f9c381"
+    {% elif cell == 'A' %}
+        bgcolor="#ff0000"
+    {% elif cell == 'QP' %}
+        bgcolor="#668cff"
+    {% elif cell == 'J' %}
+        bgcolor="#99d68d"
+    {% elif cell == 'T' or cell == 'L' %}
+        bgcolor="#ffeba5"
+    {% endif %}
+{% endmacro %}
+
+
+{% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         {{ message }}
+      {% endfor %}
+   {% endif %}
+{% endwith %}
+
+{% if nametest %}
+    <p>{{ nametest }}</p>
+{% endif %}
+
+<table>
+    <tr>
+        <th></th>
+
+    {% for time_slot in time_slots %}
+        <th>{{ time_slot }}</th>
+    {% endfor %}
+   
+    {% for idx in range(list_len) %}
+    <tr>
+
+        <div class="name">
+        <td>{{ staff_list[idx].name }}</td>
+        </div>
+        {% for column in time_slots %}
+            <td {{ set_color(table[idx][loop.index0]) }}>
+                {{ table[idx][loop.index0] }}
+            </td>
+        {% endfor %}
+
+    </tr>
+    {% endfor %}
+</table>
+    
+<div>
+
+<br>
+
+<form action="/timesheet/gen">
+    <button type="submit" formaction="/uploads/test.txt">Download timesheet</button>
+    <button type="submit">Generate a new one</button>
+</form>
+</div>
+
+{% endblock %}
