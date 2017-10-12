@@ -1,5 +1,5 @@
 from flask import (Flask, flash, render_template, request,
-                    url_for, send_from_directory)
+                    url_for, send_from_directory, jsonify)
 from flask_session import Session
 from lib import Shift, TimeSheet, Staff, Symbol
 import os
@@ -10,6 +10,8 @@ app = Flask(__name__, static_url_path='/uploads')
 app.secret_key = 'super secret key'
 
 cache = {}
+# test variable
+staff_number = 5
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -58,18 +60,21 @@ def timesheet():
         return render_template('index.html')
 
 
-@app.route('/timesheet/gen', methods=['GET', 'POST'])
+@app.route('/timesheet/t', methods=['GET'])
 def regenerate():
-    if request.method == 'POST':
-        timesheet = TimeSheet(cache)
+    timesheet = TimeSheet(cache)
+    
+    #TODO to be used as a object function
+    table = timesheet.table
+    table.insert(0, Shift.time_slots)
+    for idx,row in enumerate(table):
+        if idx > 0:
+            row.insert(0, timesheet.staff_names[idx - 1])
+        else:
+            row.insert(0, '')
 
-        return render_template('result.html',
-                                time_slots=Shift.time_slots,
-                                table=timesheet.table,
-                                staff_list=timesheet.staff_list,
-                                list_len=len(timesheet.staff_list))
-    else:
-        return render_template('index.html')
+    return jsonify(table=table)
+    
 
 @app.route('/uploads/<path:filename>')
 def download(filename):

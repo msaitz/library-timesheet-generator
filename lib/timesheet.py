@@ -9,7 +9,8 @@ class TimeSheet:
         self.col = len(Shift.time_slots)
         self.table = [[Symbol.blank] * self.col for _ in range(self.staff_num)]
         self.staff_list = self._import_staff_data(cached_data)
-        
+        self.staff_names = self._get_name_list()
+
         self.add_shifts(len(Shift.time_slots))
         
         for break_time in Shift.break_list:
@@ -275,3 +276,9 @@ class TimeSheet:
     def _get_weight_list(self):
         weights = [obj.weight for obj in self.staff_list]
         return weights
+
+    #TODO with the new variable some operations can be simplified
+    def _get_name_list(self):
+        names = [obj.name for obj in self.staff_list]
+        return names
+

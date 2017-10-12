@@ -52,15 +52,45 @@
     </tr>
     {% endfor %}
 </table>
-    
-<div>
 
 <br>
 
+<div>
 <form action="/timesheet/gen">
     <button type="submit" formaction="/uploads/test.txt">Download timesheet</button>
     <button type="submit">Generate a new one</button>
 </form>
 </div>
 
+<button type="button" onclick="createTable()">Try it</button>
+
+<script>
+    function createTable() {
+        console.log("func!")
+        $.getJSON($SCRIPT_ROOT + "timesheet/t", function(result) {
+            var body = document.body;
+            var target = document.getElementById('test');
+            var tbl = document.createElement('table');
+            tbl.setAttribute('border', '1');
+            
+            var lenRow = Object.keys(result.table).length; 
+            var lenCol = result.table[Object.keys(result.table)[0]].length;
+             
+            console.log(result.table[Object.keys(result.table)[0]][0]);
+
+            for (var i = 0; i < lenRow; i++) {
+                var tr = tbl.insertRow();
+                
+                for (var j = 0; j < lenCol; j++) {
+                    var td = tr.insertCell();
+                    td.appendChild(document.createTextNode
+                        (result.table[Object.keys(result.table)[i]][j]));
+                }
+            }
+            target.appendChild(tbl);
+         });
+    };
+</script>
+
+<div id="test"></div>
 {% endblock %}
