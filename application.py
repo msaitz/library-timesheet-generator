@@ -4,6 +4,7 @@ from flask_session import Session
 from lib import Shift, TimeSheet, Staff, Symbol
 import os
 import random
+import copy
 
 #configure application
 app = Flask(__name__, static_url_path='/uploads')
@@ -49,34 +50,57 @@ def timesheet():
         cache['start'] = start_list
         cache['finish'] = finish_list
 
-        timesheet = TimeSheet(cache)
-        
-        return render_template('result.html',
-                                time_slots=Shift.time_slots,
-                                table=timesheet.table,
-                                staff_list=timesheet.staff_list,
-                                list_len=len(timesheet.staff_list))
+        #timesheet = TimeSheet(cache)
+         
+        #timesheet.create_timetable() 
+        #timesheet.print_table()
+
+        return render_template('result.html')
+                                #time_slots=Shift.time_slots,
+                                #table=timesheet.table,
+                                #staff_list=timesheet.staff_list,
+                                #list_len=len(timesheet.staff_list))
     else:
         return render_template('index.html')
 
 
 @app.route('/timesheet/t', methods=['GET'])
 def regenerate():
-    timesheet = TimeSheet(cache)
-    
+    timesheeto = TimeSheet(cache)
+    timesheeto.create_timetable() 
+    timesheeto.print_table()
     #TODO to be used as a object function
-    table = timesheet.table
+    
+    table = copy.deepcopy(timesheeto.table)
+    
     table.insert(0, Shift.time_slots)
-    for idx,row in enumerate(table):
+    staff_names = cache['name']
+    data = {}
+    data['name'] = cache['name']
+    data['table'] = table
+    
+    '''
+    # el problema reside AQUI TODO
+    for idx,row in enumerate(tableau):
         if idx > 0:
-            row.insert(0, timesheet.staff_names[idx - 1])
+            row.insert(0, staff_names[idx - 1])
         else:
             row.insert(0, '')
-
-    return jsonify(table=table)
+    '''
     
 
-@app.route('/uploads/<path:filename>')
+    return jsonify(table=table, names=cache['name'])
+
+
+@app.route('/timesheet/gen')
+def test():
+    timesheeto = TimeSheet(cache)
+    timesheeto.create_timetable()
+    timesheeto.print_table()
+    return render_template('result.html')
+
+
+app.route('/uploads/<path:filename>')
 def download(filename):
     with open('uploads/test.txt', 'w') as f:
         f.write('comeme la po')

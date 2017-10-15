@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
+{#
 {% macro set_color(cell) %}
     {% if cell == ' ' %}
         bgcolor="#f9c381"
@@ -15,7 +15,6 @@
         bgcolor="#ffeba5"
     {% endif %}
 {% endmacro %}
-
 
 {% with messages = get_flashed_messages() %}
    {% if messages %}
@@ -52,6 +51,7 @@
     </tr>
     {% endfor %}
 </table>
+#}
 
 <br>
 
@@ -66,28 +66,39 @@
 
 <script>
     function createTable() {
-        console.log("func!")
         $.getJSON($SCRIPT_ROOT + "timesheet/t", function(result) {
-            var body = document.body;
-            var target = document.getElementById('test');
+            
+            //var target = document.getElementById('test');
             var tbl = document.createElement('table');
             tbl.setAttribute('border', '1');
             
             var lenRow = Object.keys(result.table).length; 
             var lenCol = result.table[Object.keys(result.table)[0]].length;
-             
-            console.log(result.table[Object.keys(result.table)[0]][0]);
 
             for (var i = 0; i < lenRow; i++) {
                 var tr = tbl.insertRow();
                 
                 for (var j = 0; j < lenCol; j++) {
                     var td = tr.insertCell();
+                    if (j == 0) {
+                        if (i == 0) {
+                            td.appendChild(document.createTextNode(''));
+                        } else {
+                            td.appendChild(document.createTextNode
+                                (result.names[i - 1]));
+                        }
+                    } else {
                     td.appendChild(document.createTextNode
                         (result.table[Object.keys(result.table)[i]][j]));
+                    }
                 }
             }
-            target.appendChild(tbl);
+            var div = document.getElementById('test');
+            while(div.firstChild){
+                div.removeChild(div.firstChild);
+            }
+            //document.getElementById('test').innterHTML = "";
+            document.getElementById('test').appendChild(tbl);
          });
     };
 </script>

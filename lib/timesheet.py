@@ -11,6 +11,8 @@ class TimeSheet:
         self.staff_list = self._import_staff_data(cached_data)
         self.staff_names = self._get_name_list()
 
+        
+    def create_timetable(self):
         self.add_shifts(len(Shift.time_slots))
         
         for break_time in Shift.break_list:
