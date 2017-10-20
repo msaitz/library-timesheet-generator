@@ -69,26 +69,10 @@ def regenerate():
     timesheeto = TimeSheet(cache)
     timesheeto.create_timetable() 
     timesheeto.print_table()
-    #TODO to be used as a object function
     
     table = copy.deepcopy(timesheeto.table)
-    
     table.insert(0, Shift.time_slots)
-    staff_names = cache['name']
-    data = {}
-    data['name'] = cache['name']
-    data['table'] = table
     
-    '''
-    # el problema reside AQUI TODO
-    for idx,row in enumerate(tableau):
-        if idx > 0:
-            row.insert(0, staff_names[idx - 1])
-        else:
-            row.insert(0, '')
-    '''
-    
-
     return jsonify(table=table, names=cache['name'])
 
 

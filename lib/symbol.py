@@ -4,6 +4,6 @@ class Symbol:
     off_duty = ' '
     lunch = 'L'
     tea = 'T'
-    adu = 'A'
-    juv = 'J'
+    adu = 'ADU'
+    juv = 'JUV'
     qp = 'QP'

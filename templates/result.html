@@ -1,107 +1,98 @@
 {% extends "layout.html" %}
 
 {% block body %}
-{#
-{% macro set_color(cell) %}
-    {% if cell == ' ' %}
-        bgcolor="#f9c381"
-    {% elif cell == 'A' %}
-        bgcolor="#ff0000"
-    {% elif cell == 'QP' %}
-        bgcolor="#668cff"
-    {% elif cell == 'J' %}
-        bgcolor="#99d68d"
-    {% elif cell == 'T' or cell == 'L' %}
-        bgcolor="#ffeba5"
-    {% endif %}
-{% endmacro %}
 
-{% with messages = get_flashed_messages() %}
-   {% if messages %}
-      {% for message in messages %}
-         {{ message }}
-      {% endfor %}
-   {% endif %}
-{% endwith %}
+<br>
 
-{% if nametest %}
-    <p>{{ nametest }}</p>
-{% endif %}
-
-<table>
-    <tr>
-        <th></th>
-
-    {% for time_slot in time_slots %}
-        <th>{{ time_slot }}</th>
-    {% endfor %}
-   
-    {% for idx in range(list_len) %}
-    <tr>
-
-        <div class="name">
-        <td>{{ staff_list[idx].name }}</td>
-        </div>
-        {% for column in time_slots %}
-            <td {{ set_color(table[idx][loop.index0]) }}>
-                {{ table[idx][loop.index0] }}
-            </td>
-        {% endfor %}
-
-    </tr>
-    {% endfor %}
-</table>
-#}
+<div id="timetable"></div>
 
 <br>
 
 <div>
 <form action="/timesheet/gen">
     <button type="submit" formaction="/uploads/test.txt">Download timesheet</button>
-    <button type="submit">Generate a new one</button>
+    <button type="button" onclick="createTable()">Generate a new timesheet</button>
 </form>
 </div>
 
-<button type="button" onclick="createTable()">Try it</button>
 
 <script>
-    function createTable() {
-        $.getJSON($SCRIPT_ROOT + "timesheet/t", function(result) {
-            
-            //var target = document.getElementById('test');
-            var tbl = document.createElement('table');
-            tbl.setAttribute('border', '1');
-            
-            var lenRow = Object.keys(result.table).length; 
-            var lenCol = result.table[Object.keys(result.table)[0]].length;
 
-            for (var i = 0; i < lenRow; i++) {
-                var tr = tbl.insertRow();
-                
-                for (var j = 0; j < lenCol; j++) {
-                    var td = tr.insertCell();
-                    if (j == 0) {
-                        if (i == 0) {
-                            td.appendChild(document.createTextNode(''));
-                        } else {
-                            td.appendChild(document.createTextNode
-                                (result.names[i - 1]));
-                        }
+function createTable() {
+    $.getJSON($SCRIPT_ROOT + "timesheet/t", function(result) {
+        
+        var tbl = document.createElement('table');
+        tbl.setAttribute('border', '1');
+        
+        var lenRow = Object.keys(result.table).length; 
+        var lenCol = result.table[Object.keys(result.table)[0]].length;
+
+        for (var i = 0; i < lenRow; i++) {
+            var tr = tbl.insertRow();
+            
+            for (var j = 0; j < lenCol; j++) {
+                var td = tr.insertCell();
+                if (j == 0) {
+                    if (i == 0) {
+                        td.appendChild(document.createTextNode(''));
                     } else {
-                    td.appendChild(document.createTextNode
-                        (result.table[Object.keys(result.table)[i]][j]));
+                        td.appendChild(document.createTextNode
+                            (result.names[i - 1]));
                     }
+                } else {
+                // color function here
+                var cell = result.table[Object.keys(result.table)[i]][j];
+                if (i > 0) {
+                    td.setAttribute("bgcolor", cellColor(cell));
+                }
+                td.appendChild(document.createTextNode(cell));
+                
                 }
             }
-            var div = document.getElementById('test');
-            while(div.firstChild){
-                div.removeChild(div.firstChild);
-            }
-            //document.getElementById('test').innterHTML = "";
-            document.getElementById('test').appendChild(tbl);
-         });
-    };
+        }
+        var div = document.getElementById('timetable');
+        while(div.firstChild){
+            div.removeChild(div.firstChild);
+        }
+        document.getElementById('timetable').appendChild(tbl);
+     });
+};
+
+function cellColor(cellContent) {
+    var color;
+    switch (cellContent) {
+        case " ":
+            color = "#f9c381";
+            break;
+        case "ADU":
+            color = "#ff0000";
+            break;
+        case "QP": 
+            color = "#668cff";
+            break;
+        case "JUV":
+            color = "#99d68d";
+            break;
+        case "T":
+        case "L":
+            color = "#ffeba5";
+            break;
+        default:
+            color = "white";
+    }
+    return color;
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    createTable();
+}, false);
+
+
+
+
+
+
+
 </script>
 
-<div id="test"></div>
 {% endblock %}
