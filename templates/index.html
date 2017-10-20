@@ -2,13 +2,13 @@
 
 {% block body %}
 
-<br><br>
-<form action="/form" method="POST">
+<br>
+<!--<form action="/form" method="POST">
     <label for="number">Number of staff:</label>
     <input type="number" class="form-control" name="num"><br>
     <button type="submit" class="btn btn-default">Submit</button>
 </form> 
-
+-->
 <br>
 <form id="staff_number">
     <label for="number">Number of staff:</label>
@@ -37,8 +37,8 @@ window.onload=function() {
     }
 }
 
+
 function generateForm(value) {
-    console.log("el valor de value es " + value);
     var f = document.createElement("form");
     f.setAttribute('action', "/timesheet");
     f.setAttribute('method', "POST");
@@ -57,7 +57,6 @@ function generateForm(value) {
         var lb = document.createElement("label");
         lb.appendChild(document.createTextNode(" Starting Time: "));
         f.appendChild(lb);
-        
         f.appendChild(gen_time_selector(i, "start"));
 
         // finish selector + label
@@ -65,11 +64,30 @@ function generateForm(value) {
         lb.appendChild(document.createTextNode(" Finishing Time: "));
         f.appendChild(lb);
         f.appendChild(gen_time_selector(i, "finish"));
-    }
+    }  
+    
+    // hidden field
+    var hidden = document.createElement("input");
+    hidden.setAttribute('type', "hidden");
+    hidden.setAttribute('name', "num");
+    hidden.setAttribute('value', value);
+    var staff_num = value;
+    f.appendChild(hidden);
 
+
+    // button
+    var br = document.createElement("br");
+    f.append(br);
+    var btn = document.createElement("button");
+    btn.setAttribute('type', "submit");
+    btn.appendChild(document.createTextNode("Submit"));
+    f.appendChild(btn);
+
+    
     document.getElementById("new_form").appendChild(f);
 }
-        
+    
+
 // Generate <p> with staff number
 function gen_p_staff(num) {
     var p = document.createElement("p");
@@ -117,7 +135,7 @@ function gen_time_selector(num, time) {
     var time_selector = document.createElement("select");
     time_selector.setAttribute('name', time + (num + 1));
     
-    var start_value = [1, 2, 3, 4, 5, 6, 7, 8];
+    var start_value = [0, 1, 2, 3, 4, 5, 6, 7, 8];
     var start_time = ["9:00", "10:00", "10:20", "10:40", "11:00", "12:00",
                     "1:00", "2:00", "3:00"];
     var finish_value = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];

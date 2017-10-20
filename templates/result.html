@@ -24,15 +24,16 @@ function createTable() {
         var tbl = document.createElement('table');
         tbl.setAttribute('border', '1');
         
-        var lenRow = Object.keys(result.table).length; 
+        var lenRow = Object.keys(result.table).length;
         var lenCol = result.table[Object.keys(result.table)[0]].length;
+        console.log(lenCol);
 
         for (var i = 0; i < lenRow; i++) {
             var tr = tbl.insertRow();
             
-            for (var j = 0; j < lenCol; j++) {
+            for (var j = -1; j < lenCol; j++) {
                 var td = tr.insertCell();
-                if (j == 0) {
+                if (j == -1) {
                     if (i == 0) {
                         td.appendChild(document.createTextNode(''));
                     } else {
@@ -56,7 +57,7 @@ function createTable() {
         }
         document.getElementById('timetable').appendChild(tbl);
      });
-};
+}
 
 function cellColor(cellContent) {
     var color;

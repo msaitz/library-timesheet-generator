@@ -11,14 +11,12 @@ app = Flask(__name__, static_url_path='/uploads')
 app.secret_key = 'super secret key'
 
 cache = {}
-# test variable
-staff_number = 5
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
 
-
+''' DEPRECIATED
 @app.route('/form', methods=['GET', 'POST'])
 def form():
     if request.method == 'POST':
@@ -29,17 +27,18 @@ def form():
     
     else:
         return render_template('index.html')
-
+'''
 
 @app.route('/timesheet', methods=['GET', 'POST'])
 def timesheet():
     if request.method == 'POST':
+        staff_number = int(request.form['num'])
         name_list = []
         job_list = []
         start_list = []
         finish_list = []
         
-        for i in range(1, cache['staff_number'] + 1):
+        for i in range(1, staff_number + 1):
                 name_list.append(request.form['name' + str(i)])
                 job_list.append(request.form['job' + str(i)])
                 start_list.append(request.form['start' + str(i)])
@@ -49,20 +48,16 @@ def timesheet():
         cache['job'] = job_list
         cache['start'] = start_list
         cache['finish'] = finish_list
-
-        #timesheet = TimeSheet(cache)
+        cache['staff_number'] = staff_number 
+        timesheet = TimeSheet(cache)
          
         #timesheet.create_timetable() 
-        #timesheet.print_table()
+        timesheet.print_table()
 
         return render_template('result.html')
-                                #time_slots=Shift.time_slots,
-                                #table=timesheet.table,
-                                #staff_list=timesheet.staff_list,
-                                #list_len=len(timesheet.staff_list))
+    
     else:
         return render_template('index.html')
-
 
 @app.route('/timesheet/t', methods=['GET'])
 def regenerate():
