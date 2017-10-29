@@ -56,7 +56,7 @@ class TimeSheet:
                 #Staff(data['name'][i], data['job'][i],
                 Staff(data.get('name')[i], data.get('job')[i],
                 #int(data['start'][i]), int(data['finish'][i])))
-                int(data.get('start')[i], int(data.get('finish')[i]))))
+                int(data.get('start')[i]), int(data.get('finish')[i])))
        
         #print('start... ', staff_list[0].start)
         #print('finish... ', staff_list[0].finish)

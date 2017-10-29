@@ -1,18 +1,23 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<div id="index">
 
-<br>
-<form id="staff_number">
-    <label for="number">Number of staff:</label>
-    <input type="number" class="form-control" name="num" id="form"><br>
-    <button type="submit">Submit</button>
-</form>
+    {% if  modify %}
+    <div id="modify"></div>
+    {% endif %}
 
-<br>
+    <br>
+    <form id="staff_number">
+        <label for="number">Number of staff:</label>
+        <input type="number" name="num" id="form"><br>
+        <button type="submit">Submit</button>
+    </form>
 
-<div id="new_form">
-   
-</div>
+    <br>
 
+    <div id="new_form">
+       
+    </div>
+    </div>
 {% endblock %}

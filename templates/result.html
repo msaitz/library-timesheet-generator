@@ -1,30 +1,31 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<div id="table_result">
+    <br>
 
-<br>
+    <div id="timetable"></div>
 
-<div id="timetable"></div>
+    <br>
 
-<br>
 
-<div>
-<form action="/timesheet/gen" method='POST'>
-    <button type="submit" formaction="/">Modify staff info</button>
-    <button type="submit" formaction="/uploads/test.txt">Download timesheet</button>
-    <button type="button" onclick="createTable()">Generate a new timesheet</button>
-</form>
+    <div>
+    <form action="/timesheet/gen" method='POST'>
+        <button type="submit" formaction="/">Modify staff info</button>
+        <button type="submit" formaction="/uploads/test.txt">Download timesheet
+        </button>
+        <button type="button" onclick="createTable()">Generate a new timesheet
+        </button>
+    </form>
+    </div>
 </div>
 
 
-<script>
 
 
 
 
 
 
-
-</script>
 
 {% endblock %}

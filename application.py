@@ -12,13 +12,15 @@ app.secret_key = 'super secret key'
 
 cache = {}
 
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         print('post!')
         print(cache)
-        return render_template['index.html'])
-    return render_template('index.html')
+        return render_template('index.html', modify=True)
+    
+    return render_template('index.html', cbody='body id="forms"')
 
     
 @app.route('/timesheet', methods=['GET', 'POST'])
@@ -42,6 +44,7 @@ def timesheet():
         cache['finish'] = finish_list
         cache['staff_number'] = staff_number 
         timesheet = TimeSheet(cache)
+        print(cache)
          
         return render_template('result.html')
     
@@ -61,12 +64,19 @@ def regenerate():
     
     return render_template('index.html')
 
+
 @app.route('/timesheet/gen')
 def test():
     timesheet = TimeSheet(cache)
     timesheet.create_timetable()
     timesheet.print_table()
     return render_template('result.html')
+
+
+@app.route('/data')
+def modify_data():
+    if cache:
+        return jsonify(cache=cache)
 
 
 app.route('/uploads/<path:filename>')
