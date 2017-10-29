@@ -14,21 +14,13 @@ cache = {}
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        print('post!')
+        print(cache)
+        return render_template['index.html'])
     return render_template('index.html')
 
-''' DEPRECIATED
-@app.route('/form', methods=['GET', 'POST'])
-def form():
-    if request.method == 'POST':
-        staff_number = int(request.form['num'])
-        cache['staff_number'] = staff_number
-
-        return render_template('form.html', staff_number=staff_number)
     
-    else:
-        return render_template('index.html')
-'''
-
 @app.route('/timesheet', methods=['GET', 'POST'])
 def timesheet():
     if request.method == 'POST':
@@ -51,31 +43,29 @@ def timesheet():
         cache['staff_number'] = staff_number 
         timesheet = TimeSheet(cache)
          
-        #timesheet.create_timetable() 
-        timesheet.print_table()
-
         return render_template('result.html')
     
     else:
         return render_template('index.html')
 
-@app.route('/timesheet/t', methods=['GET'])
-def regenerate():
-    timesheeto = TimeSheet(cache)
-    timesheeto.create_timetable() 
-    timesheeto.print_table()
-    
-    table = copy.deepcopy(timesheeto.table)
-    table.insert(0, Shift.time_slots)
-    
-    return jsonify(table=table, names=cache['name'])
 
+@app.route('/timesheet/t')
+def regenerate():
+    if cache:
+        timesheet = TimeSheet(cache)
+        timesheet.create_timetable() 
+    
+        table = copy.deepcopy(timesheet.table)
+        table.insert(0, Shift.time_slots)
+        return jsonify(table=table, names=cache['name'])
+    
+    return render_template('index.html')
 
 @app.route('/timesheet/gen')
 def test():
-    timesheeto = TimeSheet(cache)
-    timesheeto.create_timetable()
-    timesheeto.print_table()
+    timesheet = TimeSheet(cache)
+    timesheet.create_timetable()
+    timesheet.print_table()
     return render_template('result.html')
 
 

@@ -5,7 +5,7 @@ from .shift import Shift
 
 class TimeSheet:
     def __init__(self, cached_data):
-        self.staff_num = cached_data['staff_number']
+        self.staff_num = cached_data.get('staff_number', 0)
         self.col = len(Shift.time_slots)
         self.table = [[Symbol.blank] * self.col for _ in range(self.staff_num)]
         self.staff_list = self._import_staff_data(cached_data)
@@ -20,10 +20,12 @@ class TimeSheet:
         
         shifts = Shift.dalston_shifts
         random.shuffle(shifts)
-
+        
         for job in shifts:
             self.job_manager(job)
-
+        if self.staff_num > 3:
+            self.job_manager(Symbol.adu)
+        print(shifts)
 
     def print_table(self):
         for idx in range(len(self.table)):
@@ -48,10 +50,13 @@ class TimeSheet:
 
     def _import_staff_data(self, data):
         staff_list = list()
-        for i, key in enumerate(data['name']):
+        #for i, key in enumerate(data.get('name')):
+        for i in range(self.staff_num):
             staff_list.append(
-                Staff(data['name'][i], data['job'][i],
-                int(data['start'][i]), int(data['finish'][i])))
+                #Staff(data['name'][i], data['job'][i],
+                Staff(data.get('name')[i], data.get('job')[i],
+                #int(data['start'][i]), int(data['finish'][i])))
+                int(data.get('start')[i], int(data.get('finish')[i]))))
        
         #print('start... ', staff_list[0].start)
         #print('finish... ', staff_list[0].finish)

@@ -12,7 +12,7 @@ class Shift:
                 'late': [12, 13],
                 'lunch': [5, 6]}
     break_list = ['lunch', 'late', 'morning', 'afternoon']
-    dalston_shifts = [Symbol.adu, Symbol.adu, Symbol.qp, Symbol.juv]
+    dalston_shifts = [Symbol.adu, Symbol.qp, Symbol.juv]
     
 
     @classmethod
