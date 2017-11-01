@@ -1,18 +1,19 @@
 window.onload=function() {
-    if (!document.getElementById("index")) {
+    if (!document.getElementById("main-form")) {
         return false;
     }   
     
     if (document.getElementById("modify")) {
-        console.log("funsion");
+        hideContent('staff-number-form');
         loadModForm();
         return false;
     } else {
-        document.getElementById("staff_number").onsubmit=function() {
-        var value = document.getElementById("form").value;
-        
-        generateForm(value);
-        return false;
+        document.getElementById("staff-number-form").onsubmit=function() {
+            var value = document.getElementById("form").value;
+            hideContent('new_form');
+            hideContent('staff-number-form');    
+            generateForm(value);
+            return false;
         }
     }
 }
@@ -25,7 +26,15 @@ function loadModForm() {
     });
 }
 
+function hideContent(target) {
+    var div = document.getElementById(target);
+    while (div.firstChild) {
+        console.log('clareando');
+        div.removeChild(div.firstChild);
+    }
 
+
+}
 
 function generateForm(value, data) {
     var f = document.createElement("form");
@@ -49,7 +58,7 @@ function generateForm(value, data) {
 
         // start selector + label
         var lb = document.createElement("label");
-        lb.appendChild(document.createTextNode(" Starting Time: "));
+        lb.appendChild(document.createTextNode("Start"));
         f.appendChild(lb);
         
         if (typeof data !== 'undefined') {
@@ -60,7 +69,7 @@ function generateForm(value, data) {
 
         // finish selector + label
         lb = document.createElement("label");
-        lb.appendChild(document.createTextNode(" Finishing Time: "));
+        lb.appendChild(document.createTextNode("Finish"));
         f.appendChild(lb);
         
         if (typeof data !== 'undefined') {
@@ -86,7 +95,6 @@ function generateForm(value, data) {
     btn.appendChild(document.createTextNode("Generate timetable!"));
     f.appendChild(btn);
    
-    // remove any previous form
 
     document.getElementById("new_form").appendChild(f);
 }
@@ -96,6 +104,7 @@ function generateForm(value, data) {
 function genPStaff(num) {
     var p = document.createElement("p");
     var pContent = "Staff " + (num + 1);
+    p.setAttribute('id', 'pform');
     p.appendChild(document.createTextNode(pContent));
     return p;
 }

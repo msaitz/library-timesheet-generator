@@ -33,7 +33,11 @@ def timesheet():
         finish_list = []
         
         for i in range(1, staff_number + 1):
-                name_list.append(request.form['name' + str(i)])
+                grabbed_name = request.form['name' + str(i)]
+                if grabbed_name == '':
+                    grabbed_name = 'No name'
+                
+                name_list.append(grabbed_name)
                 job_list.append(request.form['job' + str(i)])
                 start_list.append(request.form['start' + str(i)])
                 finish_list.append(request.form['finish' + str(i)])

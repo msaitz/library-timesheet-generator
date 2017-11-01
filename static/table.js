@@ -5,7 +5,6 @@ function createTable() {
     $.getJSON($SCRIPT_ROOT + "timesheet/t", function(result) {
         
         var tbl = document.createElement('table');
-        tbl.setAttribute('border', '1');
         
         var lenRow = Object.keys(result.table).length;
         var lenCol = result.table[Object.keys(result.table)[0]].length;
@@ -17,6 +16,7 @@ function createTable() {
                 var td = tr.insertCell();
                 if (j == -1) {
                     if (i == 0) {
+                        td.setAttribute('class', 'table-names');
                         td.appendChild(document.createTextNode(''));
                     } else {
                         td.appendChild(document.createTextNode
