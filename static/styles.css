@@ -2,8 +2,8 @@ body {
     font-family: arial, monospace;
     background-color: white;
     text-align: center;
-    width: 600px;
-    //margin: auto;
+    /*width: 600px;
+    margin: auto;*/
     margin-left: 15%;
     margin-right: 15%;
 }
@@ -15,15 +15,17 @@ body {
     border: 2px solid mediumseagreen;
     border-radius: 8px;
     padding: 10px 100px 10px;
-    width: 100%;
-    min-width: 400px;
-    margin: 2% 10%;
+    width: 585px;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    margin-left: auto;
+    margin-right: auto;
     display: block;
 }
 
 a:link, a:visited {
     background-color: mediumseagreen;
-    padding: 14px 25px;
+    padding: 14px 20px;
     text-decoration: none;
     display: inline-block;
     border-radius: 8px;
@@ -35,13 +37,22 @@ a:hover, a:active {
 }
 
 
+/*#table-buttons {
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}*/
+
 #main-form {
 
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;
     padding-bottom: auto;
-    margin: 4% 18%;
+    width: 585px;
+    margin-top: 4%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 input, select {
@@ -91,20 +102,20 @@ button {
     color: white;
     padding: 16px 32px;
     text-decoration: none;
-    margin: 15px 10px;
+    margin: 2% 10px;
     cursor: pointer;
 }
 
 table {
     border-collapse: collapse;
     table-layout: fixed;
-    width: 100%;
+    width: 850px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .table-names {
-    width: 10%;
+    width: 12%;
     padding: 5px 5px;
     margin: 5px 5px;
 }
@@ -117,6 +128,7 @@ table, th, td {
 th, td {
     padding: 5px;
     font-size: 100%;
+    //width: 20px;
 }
 
 #pform {
