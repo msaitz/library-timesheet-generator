@@ -15,8 +15,8 @@ function createTable() {
             for (var j = -1; j < lenCol; j++) {
                 var td = tr.insertCell();
                 if (j == -1) {
+                    td.setAttribute('class', 'table-names');
                     if (i == 0) {
-                        td.setAttribute('class', 'table-names');
                         td.appendChild(document.createTextNode(''));
                     } else {
                         td.appendChild(document.createTextNode
