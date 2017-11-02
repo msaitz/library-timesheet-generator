@@ -10,6 +10,12 @@ window.onload=function() {
     } else {
         document.getElementById("staff-number-form").onsubmit=function() {
             var value = document.getElementById("form").value;
+            if (value < 0) value = value * -1;
+            if (value == 0) {
+                alert('0 staff means no timetable :(');
+                return false;
+            }
+
             hideContent('new_form');
             hideContent('staff-number-form');    
             generateForm(value);
@@ -32,15 +38,13 @@ function hideContent(target) {
         console.log('clareando');
         div.removeChild(div.firstChild);
     }
-
-
 }
 
 function generateForm(value, data) {
     var f = document.createElement("form");
     f.setAttribute('action', "/timesheet");
     f.setAttribute('method', "POST");
-
+        
     for (var i = 0; i < value; i++) {
         // p
         f.appendChild(genPStaff(i));
