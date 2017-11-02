@@ -27,6 +27,7 @@ class TimeSheet:
             self.job_manager(Symbol.adu)
         print(shifts)
 
+
     def print_table(self):
         for idx in range(len(self.table)):
             print(self.staff_list[idx].initial, end=' ')
@@ -53,13 +54,9 @@ class TimeSheet:
         #for i, key in enumerate(data.get('name')):
         for i in range(self.staff_num):
             staff_list.append(
-                #Staff(data['name'][i], data['job'][i],
                 Staff(data.get('name')[i], data.get('job')[i],
-                #int(data['start'][i]), int(data['finish'][i])))
                 int(data.get('start')[i]), int(data.get('finish')[i])))
        
-        #print('start... ', staff_list[0].start)
-        #print('finish... ', staff_list[0].finish)
         return staff_list
 
 
@@ -88,7 +85,6 @@ class TimeSheet:
             else:
                 continue
             
-
             # assign staff for first slot
             if i == 0:
                 current_staff = section[random_num]
@@ -284,7 +280,7 @@ class TimeSheet:
         weights = [obj.weight for obj in self.staff_list]
         return weights
 
-    #TODO with the new variable some operations can be simplified
+    
     def _get_name_list(self):
         names = [obj.name for obj in self.staff_list]
         return names
