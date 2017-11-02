@@ -38,6 +38,14 @@ function createTable() {
             div.removeChild(div.firstChild);
         }
         document.getElementById('timetable').appendChild(tbl);
+        
+        var timeGen = document.createElement('p');
+        timeGen.setAttribute('id', 'time-gen');
+        var str1 = 'Timetable generated in ';
+        var str2 = ' seconds';
+        var message = str1.concat(result.time.concat(str2));
+        timeGen.appendChild(document.createTextNode(message));
+        document.getElementById('timetable').appendChild(timeGen);
      });
 }
 

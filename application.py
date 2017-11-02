@@ -3,6 +3,7 @@ from flask import (Flask, flash, render_template, request,
 from flask_session import Session
 from lib import Shift, TimeSheet, Staff, Symbol
 import os
+import time
 import random
 import copy
 
@@ -47,9 +48,7 @@ def timesheet():
         cache['start'] = start_list
         cache['finish'] = finish_list
         cache['staff_number'] = staff_number 
-        timesheet = TimeSheet(cache)
-        print(cache)
-         
+        
         return render_template('result.html')
     
     else:
@@ -59,23 +58,29 @@ def timesheet():
 @app.route('/timesheet/t')
 def regenerate():
     if cache:
+        start = time.time()
         timesheet = TimeSheet(cache)
         timesheet.create_timetable() 
+        end = time.time() 
+        calc_time = format((end - start), '.4f')
     
         table = copy.deepcopy(timesheet.table)
         table.insert(0, Shift.time_slots)
-        return jsonify(table=table, names=cache['name'])
+        return jsonify(table=table, names=cache['name'], time=calc_time)
     
     return render_template('index.html')
 
-
+'''
 @app.route('/timesheet/gen')
 def test():
+    start = time.time()
     timesheet = TimeSheet(cache)
-    timesheet.create_timetable()
-    timesheet.print_table()
-    return render_template('result.html')
+    timesheet.create_timetable() 
+    end = time.time()
+    print(format(end - start), '.2f')
 
+    return render_template('result.html')
+'''
 
 @app.route('/data')
 def modify_data():

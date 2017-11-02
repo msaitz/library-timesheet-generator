@@ -113,14 +113,21 @@ table {
     text-align: left;
 }
 
+/*#table-buttons {
+}*/
+
 table, th, td {
     border: 2px solid black;
 }
 
-
 th, td {
     padding: 5px;
     font-size: 100%;
+}
+
+#time-gen {
+    margin: 2%;
+    margin-bottom: 0px;
 }
 
 #pform {
