@@ -87,9 +87,6 @@ function generateForm(value, data) {
     var staffNum = value;
     f.appendChild(hidden);
 
-    // button
-    var br = document.createElement("br");
-    f.append(br);
     var btn = document.createElement("button");
     btn.setAttribute('type', "submit");
     btn.appendChild(document.createTextNode("Generate timetable!"));
