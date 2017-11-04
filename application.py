@@ -1,4 +1,4 @@
-from flask import (Flask, flash, render_template, request,
+from flask import (Flask, flash, render_template, request, session,
                     url_for, send_from_directory, jsonify)
 from flask_session import Session
 from lib import Shift, TimeSheet, Staff, Symbol
@@ -10,8 +10,6 @@ import copy
 #configure application
 app = Flask(__name__, static_url_path='/uploads')
 app.secret_key = 'super secret key'
-
-cache = {}
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -43,44 +41,33 @@ def timesheet():
                 start_list.append(request.form['start' + str(i)])
                 finish_list.append(request.form['finish' + str(i)])
         
+        cache = {}
         cache['name'] = name_list
         cache['job'] = job_list
         cache['start'] = start_list
         cache['finish'] = finish_list
         cache['staff_number'] = staff_number 
-        
+        session['cache'] = cache
         return render_template('result.html')
-    
     else:
         return render_template('index.html')
 
 
 @app.route('/timesheet/t')
 def regenerate():
-    if cache:
+    if session['cache']:
         start = time.time()
-        timesheet = TimeSheet(cache)
+        timesheet = TimeSheet(session['cache'])
         timesheet.create_timetable() 
         end = time.time() 
         calc_time = format((end - start), '.4f')
     
         table = copy.deepcopy(timesheet.table)
         table.insert(0, Shift.time_slots)
-        return jsonify(table=table, names=cache['name'], time=calc_time)
+        return jsonify(table=table, names=session['cache'], time=calc_time)
     
     return render_template('index.html')
 
-'''
-@app.route('/timesheet/gen')
-def test():
-    start = time.time()
-    timesheet = TimeSheet(cache)
-    timesheet.create_timetable() 
-    end = time.time()
-    print(format(end - start), '.2f')
-
-    return render_template('result.html')
-'''
 
 @app.route('/data')
 def modify_data():
