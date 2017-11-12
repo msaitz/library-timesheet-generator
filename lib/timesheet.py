@@ -11,7 +11,10 @@ class TimeSheet:
         self.staff_list = self._import_staff_data(cached_data)
         self.staff_names = self._get_name_list()
 
-        
+
+    def export_staff_list(self):
+        return self.staff_list;
+
     def create_timetable(self):
         self.add_shifts(len(Shift.time_slots))
         
@@ -25,7 +28,6 @@ class TimeSheet:
             self.job_manager(job)
         if self.staff_num > 3:
             self.job_manager(Symbol.adu)
-        print(shifts)
 
 
     def print_table(self):
@@ -51,12 +53,20 @@ class TimeSheet:
 
     def _import_staff_data(self, data):
         staff_list = list()
-        #for i, key in enumerate(data.get('name')):
+        '''
         for i in range(self.staff_num):
+            print(data.get('name')[i])
             staff_list.append(
                 Staff(data.get('name')[i], data.get('job')[i],
                 int(data.get('start')[i]), int(data.get('finish')[i])))
-       
+        ''' 
+        for i in range(self.staff_num):
+            staff_data = data.get('staff' + str(i + 1))
+            print(staff_data)
+            staff_list.append(Staff((staff_data).get('name'),
+                            staff_data.get('job'),
+                            int(staff_data.get('start')),
+                            int(staff_data.get('finish'))))
         return staff_list
 
 

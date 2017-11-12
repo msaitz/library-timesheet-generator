@@ -3,7 +3,7 @@ class Staff:
     def __init__(self, name, job, start=0, finish=16):
         self.name = name
         #self.initial = self.name[0]
-        self.initial = 'A'
+        #self.initial = 'A'
         self.job = job
         self.start = start
         self.finish = finish

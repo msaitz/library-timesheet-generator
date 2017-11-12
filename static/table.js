@@ -19,8 +19,8 @@ function createTable() {
                     if (i == 0) {
                         td.appendChild(document.createTextNode(''));
                     } else {
-                        td.appendChild(document.createTextNode
-                            (result.names[i - 1]));
+                        td.appendChild(document.createTextNode(
+                                    result.names['staff'.concat(i)].name));
                     }
                 } else {
                 // color function here

@@ -22,6 +22,7 @@ window.onload=function() {
             return false;
         }
     }
+    return false;
 }
 
 
@@ -53,8 +54,8 @@ function generateForm(value, data) {
         lb.appendChild(document.createTextNode(" Starting Time: "));
 
         if (typeof data !== 'undefined') {
-            f.appendChild(genInputTag(i, data.name));
-            f.appendChild(genJobSelector(i, data.job));
+            f.appendChild(genInputTag(i, data));
+            f.appendChild(genJobSelector(i, data));
         } else {
             f.appendChild(genInputTag(i));
             f.appendChild(genJobSelector(i));
@@ -66,7 +67,7 @@ function generateForm(value, data) {
         f.appendChild(lb);
         
         if (typeof data !== 'undefined') {
-            f.appendChild(genTimeSelector(i, "start", data.start));
+            f.appendChild(genTimeSelector(i, "start", data));
         } else {
             f.appendChild(genTimeSelector(i, "start"));
         }
@@ -77,7 +78,7 @@ function generateForm(value, data) {
         f.appendChild(lb);
         
         if (typeof data !== 'undefined') {
-            f.appendChild(genTimeSelector(i, "finish", data.finish));
+            f.appendChild(genTimeSelector(i, "finish", data));
         } else {
             f.appendChild(genTimeSelector(i, "finish"));
         }
@@ -112,12 +113,11 @@ function genPStaff(num) {
 
 
 // Generate <input> tag
-function genInputTag(num, name) {
+function genInputTag(num, data) {
     var inp = document.createElement("input");
     inp.setAttribute('name', "name" + (num + 1));
-    
-    if (typeof name !== 'undefined') {
-        inp.setAttribute('value', name[num]);
+    if (typeof data !== 'undefined') {
+        inp.setAttribute('value', data['staff'.concat(num + 1)].name);
     } else {
         inp.setAttribute('placeholder', "name");
     }
@@ -126,7 +126,7 @@ function genInputTag(num, name) {
 
 
 // Generate <select> tag for jobs
-function genJobSelector(num, job) {
+function genJobSelector(num, data) {
     var jobSelector = document.createElement("select");
     jobSelector.setAttribute('name', "job" + (num + 1));
 
@@ -138,9 +138,10 @@ function genJobSelector(num, job) {
         opt.setAttribute('value', value[i]);
         
         
-        if (typeof job !== 'undefined' && value[i] === job[num]) {
+        if (typeof data !== 'undefined' && value[i] 
+            === data['staff'.concat(num + 1)].job) {
             opt.setAttribute('selected', "");
-        } else if (typeof job === 'undefined' && value[i] === "LA") {
+        } else if (typeof data === 'undefined' && value[i] === "LA") {
             opt.setAttribute('selected', "");
         }
         
@@ -152,7 +153,7 @@ function genJobSelector(num, job) {
 
 
 // Generate <select> tag for starting time
-function genTimeSelector(num, time, time_index) {
+function genTimeSelector(num, time, data) {
     var timeSelector = document.createElement("select");
     timeSelector.setAttribute('name', time + (num + 1));
     
@@ -164,24 +165,30 @@ function genTimeSelector(num, time, time_index) {
                     "5:30", "6:00", "7:00", "8:00"];
     var selectionValue;
     var selectionTime;
-    
+    var timeIndex 
     
     if (time === "start") {
         selectionValue = startValue;
         selectionTime = startTime;
+        if (typeof data !== 'undefined') {
+            timeIndex = data['staff'.concat(num + 1)].start;
+        }
     } else {
         selectionValue = finishValue;
         selectionTime = finishTime;
+        if (typeof data !== 'undefined') {
+            timeIndex = data['staff'.concat(num + 1)].finish;
+        }
     }
 
     for (var i = 0; i < selectionValue.length; i++) {
         var opt = document.createElement("option");
         opt.setAttribute('value', selectionValue[i]);
         
-        if (typeof time_index !== 'undefined' &&
-            selectionValue[i] === parseInt(time_index[num])) {
+        if (typeof data !== 'undefined' &&
+            selectionValue[i] === parseInt(timeIndex)) {
             opt.setAttribute('selected', "");
-        } else if (typeof time_index === 'undefined' &&
+        } else if (typeof data === 'undefined' &&
                    (selectionValue[i] === 0 || selectionValue[i] === 16)) {
             opt.setAttribute('selected', "");
         }
@@ -190,5 +197,5 @@ function genTimeSelector(num, time, time_index) {
         timeSelector.appendChild(opt);
     }
     return timeSelector;
+}
 
-}   

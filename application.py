@@ -15,8 +15,6 @@ app.secret_key = 'super secret key'
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        print('post!')
-        print(cache)
         return render_template('index.html', modify=True)
     
     return render_template('index.html', cbody='body id="forms"')
@@ -26,28 +24,18 @@ def index():
 def timesheet():
     if request.method == 'POST':
         staff_number = int(request.form['num'])
-        name_list = []
-        job_list = []
-        start_list = []
-        finish_list = []
         
+        staff_info = {}
         for i in range(1, staff_number + 1):
-                grabbed_name = request.form['name' + str(i)]
-                if grabbed_name == '':
-                    grabbed_name = 'No name'
-                
-                name_list.append(grabbed_name)
-                job_list.append(request.form['job' + str(i)])
-                start_list.append(request.form['start' + str(i)])
-                finish_list.append(request.form['finish' + str(i)])
+            staff = {'name': request.form['name' + str(i)],
+                    'job': request.form['job' + str(i)],
+                    'start': request.form['start' + str(i)],
+                    'finish': request.form['finish' + str(i)]}
+
+            staff_info['staff' + str(i)] = staff
+            staff_info['staff_number'] = staff_number
         
-        cache = {}
-        cache['name'] = name_list
-        cache['job'] = job_list
-        cache['start'] = start_list
-        cache['finish'] = finish_list
-        cache['staff_number'] = staff_number 
-        session['cache'] = cache
+        session['cache'] = staff_info
         return render_template('result.html')
     else:
         return render_template('index.html')
@@ -71,8 +59,8 @@ def regenerate():
 
 @app.route('/data')
 def modify_data():
-    if cache:
-        return jsonify(cache=cache)
+    if session['cache']:
+        return jsonify(cache=session['cache'])
 
 
 app.route('/uploads/<path:filename>')
