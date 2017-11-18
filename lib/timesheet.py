@@ -3,6 +3,7 @@ from .symbol import Symbol
 from .staff import Staff
 from .shift import Shift
 
+
 class TimeSheet:
     def __init__(self, cached_data):
         self.staff_num = cached_data.get('staff_number', 0)
@@ -53,23 +54,15 @@ class TimeSheet:
 
     def _import_staff_data(self, data):
         staff_list = list()
-        '''
-        for i in range(self.staff_num):
-            print(data.get('name')[i])
-            staff_list.append(
-                Staff(data.get('name')[i], data.get('job')[i],
-                int(data.get('start')[i]), int(data.get('finish')[i])))
-        ''' 
         for i in range(self.staff_num):
             staff_data = data.get('staff' + str(i + 1))
-            print(staff_data)
             staff_list.append(Staff((staff_data).get('name'),
                             staff_data.get('job'),
                             int(staff_data.get('start')),
                             int(staff_data.get('finish'))))
         return staff_list
 
-
+    
     def break_manager(self, break_time):
         if break_time == 'morning' or break_time == 'afternoon':
             self._add_complex_break(break_time)
@@ -190,7 +183,7 @@ class TimeSheet:
        
        # break time as late
         else:
-            changer = 0
+            changer = 1
             for i, staff in enumerate(self.staff_list):
                 if self.staff_list[i].start > 12:
                     continue

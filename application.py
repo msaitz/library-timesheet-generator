@@ -2,6 +2,7 @@ from flask import (Flask, flash, render_template, request, session,
                     url_for, send_from_directory, jsonify)
 from flask_session import Session
 from lib import Shift, TimeSheet, Staff, Symbol
+from helpers import *
 import os
 import time
 import random
@@ -24,18 +25,10 @@ def index():
 def timesheet():
     if request.method == 'POST':
         staff_number = int(request.form['num'])
-        
-        staff_info = {}
-        for i in range(1, staff_number + 1):
-            staff = {'name': request.form['name' + str(i)],
-                    'job': request.form['job' + str(i)],
-                    'start': request.form['start' + str(i)],
-                    'finish': request.form['finish' + str(i)]}
+        unsorted_data = get_form_data(staff_number) 
+        formatted_data = sort_form_data(unsorted_data)
+        session['cache'] = formatted_data
 
-            staff_info['staff' + str(i)] = staff
-            staff_info['staff_number'] = staff_number
-        
-        session['cache'] = staff_info
         return render_template('result.html')
     else:
         return render_template('index.html')
